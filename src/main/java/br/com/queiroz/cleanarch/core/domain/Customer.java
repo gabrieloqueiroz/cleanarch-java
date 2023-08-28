@@ -1,5 +1,6 @@
 package br.com.queiroz.cleanarch.core.domain;
 
+import br.com.queiroz.cleanarch.core.dto.CustomerDto;
 import org.apache.kafka.common.protocol.types.Field;
 
 public class Customer {
