@@ -7,7 +7,9 @@ import br.com.queiroz.cleanarch.dataprovider.repository.entity.CustomerEntity;
 import br.com.queiroz.cleanarch.dataprovider.repository.mapper.CustomerEntityMapper;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FindCustomerImpl implements FindCustomer {
 
   private CustomerRepository customerRepository;

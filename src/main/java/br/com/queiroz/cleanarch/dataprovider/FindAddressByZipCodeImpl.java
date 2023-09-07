@@ -6,7 +6,9 @@ import br.com.queiroz.cleanarch.dataprovider.client.FindAddressByZipCodeClient;
 import br.com.queiroz.cleanarch.dataprovider.client.mapper.AddressResponseMapper;
 import br.com.queiroz.cleanarch.dataprovider.client.response.AddressResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FindAddressByZipCodeImpl implements FindAddressByZipCode {
 
     private FindAddressByZipCodeClient findAddressByZipCodeClient;
