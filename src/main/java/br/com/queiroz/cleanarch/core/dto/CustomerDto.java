@@ -1,6 +1,5 @@
 package br.com.queiroz.cleanarch.core.dto;
 
-import br.com.queiroz.cleanarch.core.domain.Address;
 import br.com.queiroz.cleanarch.core.domain.Customer;
 
 public class CustomerDto {
