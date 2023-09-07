@@ -11,4 +11,6 @@ public interface CustomerMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "isValidCpf", ignore = true)
     CustomerDto toCustomerDto(CustomerRequest customerRequest);
+
+
 }
