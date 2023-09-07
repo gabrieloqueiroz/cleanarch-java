@@ -5,6 +5,7 @@ import br.com.queiroz.cleanarch.core.usecase.InsertCustomerUseCase;
 import br.com.queiroz.cleanarch.entrypoint.controller.mapper.CustomerMapper;
 import br.com.queiroz.cleanarch.entrypoint.controller.request.CustomerRequest;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
+
+  @Autowired
+  public CustomerController(InsertCustomerUseCase insertCustomerUseCase,
+      CustomerMapper customerMapper) {
+    this.insertCustomerUseCase = insertCustomerUseCase;
+    this.customerMapper = customerMapper;
+  }
 
   private InsertCustomerUseCase insertCustomerUseCase;
   private CustomerMapper customerMapper;
