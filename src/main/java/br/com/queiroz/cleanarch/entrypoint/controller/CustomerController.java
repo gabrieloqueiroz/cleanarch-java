@@ -4,17 +4,20 @@ import static br.com.queiroz.cleanarch.util.ConstantsUtil.BASE_PATH_CUSTOMER;
 
 import br.com.queiroz.cleanarch.core.domain.Customer;
 import br.com.queiroz.cleanarch.core.dto.CustomerDto;
+import br.com.queiroz.cleanarch.core.usecase.DeleteCustomerByIdUseCase;
 import br.com.queiroz.cleanarch.core.usecase.FindCustomerByIdUseCase;
 import br.com.queiroz.cleanarch.core.usecase.InsertCustomerUseCase;
 import br.com.queiroz.cleanarch.core.usecase.UpdateCustomerUseCase;
 import br.com.queiroz.cleanarch.entrypoint.controller.mapper.CustomerMapper;
 import br.com.queiroz.cleanarch.entrypoint.controller.request.CustomerRequest;
 import br.com.queiroz.cleanarch.entrypoint.controller.response.CustomerResponse;
+import feign.Response;
 import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,18 +36,21 @@ public class CustomerController {
       InsertCustomerUseCase insertCustomerUseCase,
       CustomerMapper customerMapper,
       FindCustomerByIdUseCase findCustomerByIdUseCase,
-      UpdateCustomerUseCase updateCustomerUseCase
+      UpdateCustomerUseCase updateCustomerUseCase,
+      DeleteCustomerByIdUseCase deleteCustomerByIdUseCase
   ) {
     this.insertCustomerUseCase = insertCustomerUseCase;
     this.customerMapper = customerMapper;
     this.findCustomerByIdUseCase = findCustomerByIdUseCase;
     this.updateCustomerUseCase = updateCustomerUseCase;
+    this.deleteCustomerByIdUseCase = deleteCustomerByIdUseCase;
   }
 
-  private InsertCustomerUseCase insertCustomerUseCase;
-  private FindCustomerByIdUseCase findCustomerByIdUseCase;
-  private UpdateCustomerUseCase updateCustomerUseCase;
-  private CustomerMapper customerMapper;
+  private final InsertCustomerUseCase insertCustomerUseCase;
+  private final FindCustomerByIdUseCase findCustomerByIdUseCase;
+  private final UpdateCustomerUseCase updateCustomerUseCase;
+  private final DeleteCustomerByIdUseCase deleteCustomerByIdUseCase;
+  private final CustomerMapper customerMapper;
 
   @PostMapping
   public ResponseEntity<CustomerResponse> insert(@Valid @RequestBody CustomerRequest customerRequest, UriComponentsBuilder uriBuilder) {
@@ -76,6 +82,13 @@ public class CustomerController {
     customerDto.setId(id);
 
     updateCustomerUseCase.update(customerDto);
+
+    return ResponseEntity.noContent().build();
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteById(@PathVariable String id) throws NotFoundException {
+    deleteCustomerByIdUseCase.delete(id);
 
     return ResponseEntity.noContent().build();
   }
