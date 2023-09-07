@@ -18,10 +18,10 @@ public class InsertCustomerUseCaseImpl implements InsertCustomerUseCase {
     }
 
     @Override
-    public void insert(CustomerDto customerDto) {
+    public Customer insert(CustomerDto customerDto) {
         Address address = findAddressByZipCode.findAddress(customerDto.getZipCode());
         Customer customer = customerDto.toEntity();
         customer.setAddress(address);
-        insertCustomer.insert(customer);
+        return insertCustomer.insert(customer);
     }
 }
