@@ -20,9 +20,9 @@ public class FindCustomerImpl implements FindCustomer {
   }
 
   @Override
-  public Optional<Customer> find(Integer id) {
+  public Optional<Customer> find(String id) {
 
-    Optional<CustomerEntity> customerEntity = customerRepository.findById(id.toString());
+    Optional<CustomerEntity> customerEntity = customerRepository.findById(id);
 
     return customerEntity.map(entity -> customerMapper.toCustomer(entity));
   }

@@ -14,7 +14,7 @@ public class FindCustomerByIdUseCaseImpl implements FindCustomerByIdUseCase {
   }
 
   @Override
-  public Customer find(Integer id) throws NotFoundException {
+  public Customer find(String id) throws NotFoundException {
     return findCustomer.find(id).orElseThrow(NotFoundException::new);
   }
 }
