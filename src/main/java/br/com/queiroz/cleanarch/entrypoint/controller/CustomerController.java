@@ -6,6 +6,7 @@ import br.com.queiroz.cleanarch.core.domain.Customer;
 import br.com.queiroz.cleanarch.core.dto.CustomerDto;
 import br.com.queiroz.cleanarch.core.usecase.FindCustomerByIdUseCase;
 import br.com.queiroz.cleanarch.core.usecase.InsertCustomerUseCase;
+import br.com.queiroz.cleanarch.core.usecase.UpdateCustomerUseCase;
 import br.com.queiroz.cleanarch.entrypoint.controller.mapper.CustomerMapper;
 import br.com.queiroz.cleanarch.entrypoint.controller.request.CustomerRequest;
 import br.com.queiroz.cleanarch.entrypoint.controller.response.CustomerResponse;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,16 +29,21 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class CustomerController {
 
   @Autowired
-  public CustomerController(InsertCustomerUseCase insertCustomerUseCase,
+  public CustomerController(
+      InsertCustomerUseCase insertCustomerUseCase,
       CustomerMapper customerMapper,
-      FindCustomerByIdUseCase findCustomerByIdUseCase) {
+      FindCustomerByIdUseCase findCustomerByIdUseCase,
+      UpdateCustomerUseCase updateCustomerUseCase
+  ) {
     this.insertCustomerUseCase = insertCustomerUseCase;
     this.customerMapper = customerMapper;
     this.findCustomerByIdUseCase = findCustomerByIdUseCase;
+    this.updateCustomerUseCase = updateCustomerUseCase;
   }
 
   private InsertCustomerUseCase insertCustomerUseCase;
   private FindCustomerByIdUseCase findCustomerByIdUseCase;
+  private UpdateCustomerUseCase updateCustomerUseCase;
   private CustomerMapper customerMapper;
 
   @PostMapping
@@ -57,5 +64,19 @@ public class CustomerController {
     CustomerResponse customerResponse = customerMapper.toCustomerResponse(customer);
 
     return ResponseEntity.ok(customerResponse);
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Void> updateById(
+      @PathVariable String id,
+      @Valid @RequestBody CustomerRequest customerRequest
+  ) throws NotFoundException {
+
+    CustomerDto customerDto = customerMapper.toCustomerDto(customerRequest);
+    customerDto.setId(id);
+
+    updateCustomerUseCase.update(customerDto);
+
+    return ResponseEntity.noContent().build();
   }
 }
