@@ -16,3 +16,6 @@ spring:
       username: root
       password: example
       database: cleanarch
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
